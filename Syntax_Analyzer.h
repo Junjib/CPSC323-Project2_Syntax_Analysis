@@ -76,11 +76,13 @@ void pushToStack(int rule, stack<Symbols> &ss)
   switch(rule)
   {
     case 1: // S --> A
+      cout << "Executing case: S --> A" << endl;
       ss.pop();
       ss.push(NTS_A); // A
       break;
 
     case 2: // A --> i=E;
+      cout << "Executing case: A --> i=E" << endl;
       ss.pop();
       ss.push(TS_SEMI); // ;
       ss.push(NTS_E); // E
@@ -89,12 +91,14 @@ void pushToStack(int rule, stack<Symbols> &ss)
       break;
 
     case 3: // E --> TE'
+      cout << "Executing case: E --> TE'" << endl;
       ss.pop();
       ss.push(NTS_EP); // E'
       ss.push(NTS_T); // T
       break;
 
     case 4: // E' --> +TE'
+      cout << "Executing case: E' --> +TE'" << endl;
       ss.pop();
       ss.push(NTS_EP); // E'
       ss.push(NTS_T); // T
@@ -102,6 +106,7 @@ void pushToStack(int rule, stack<Symbols> &ss)
       break;
 
     case 5: // E' --> -TE'
+      cout << "Executing case: E' --> -TE'" << endl;
       ss.pop();
       ss.push(NTS_EP); // E'
       ss.push(NTS_T); // T
@@ -109,16 +114,19 @@ void pushToStack(int rule, stack<Symbols> &ss)
       break;
 
     case 6: // E' --> epsilon
+      cout << "Executing case: E' --> epsilon" << endl;
       ss.pop();
       break;
 
     case 7: // T --> FT'
+      cout << "Executing case: T --> FT'" << endl;
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
       break;
 
     case 8: // T' --> *FT'
+      cout << "Executing case: T' --> *FT'" << endl;
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -126,6 +134,7 @@ void pushToStack(int rule, stack<Symbols> &ss)
       break;
 
     case 9: // T' --> /FT'
+      cout << "Executing case: T' --> /FT'" << endl;
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -133,6 +142,7 @@ void pushToStack(int rule, stack<Symbols> &ss)
       break;
 
     case 10: // T' --> %FT'
+      cout << "Executing case: T' --> %FT'" << endl;
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -140,15 +150,18 @@ void pushToStack(int rule, stack<Symbols> &ss)
       break;
 
     case 11: // T' --> epsilon
+      cout << "Executing case: T' --> epsilon" << endl;
       ss.pop();
       break;
 
     case 12: // F --> i
+      cout << "Executing case: F --> i" << endl;
       ss.pop();
       ss.push(TS_I); // i
       break;
 
     case 13: // F --> (E)
+      cout << "Executing case: F --> (E)" << endl;
       ss.pop();
       ss.push(TS_CPAREN); // )
       ss.push(NTS_E); // E

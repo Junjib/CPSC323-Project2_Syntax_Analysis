@@ -25,9 +25,20 @@ int main()
 	vector<string> lines;
 	map< Symbols, map<Symbols, int> > table;
 	stack<Symbols> ss;
+	queue<Record> lex;
+	ofstream writeFile;
 
 	linesToAnalyze(lines);
 	setupTable(table);
+	lexemeQueue(finalRecords, lex);
+	writeFile.open("output.txt");
+	for(int i = 0; i < lines.size(); i++)
+	{
+		cout << "Analyzing this line: " << lines[i] << endl;
+		syntaxAnalysis(lex, lines[i], ss, table, writeFile);
+		cout << endl << endl;
+	}
+	writeFile.close();
 // =========================================================================
 // for loop for testing purposes
 	for(int i = 0; i < finalRecords.size(); i++)

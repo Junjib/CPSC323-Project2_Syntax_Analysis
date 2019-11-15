@@ -35,8 +35,10 @@ int main()
 	for(int i = 0; i < lines.size(); i++)
 	{
 		cout << "Analyzing this line: " << lines[i] << endl;
+		writeFile << "Analyzing this line: " << lines[i] << endl;
 		syntaxAnalysis(lex, lines[i], ss, table, writeFile);
 		cout << endl << endl;
+		writeFile << endl;
 	}
 	writeFile.close();
 // =========================================================================

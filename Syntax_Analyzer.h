@@ -221,6 +221,7 @@ void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
     if(lexer(*p) == ss.top())
     {
       cout << "Matched symbols: " << *p << endl;
+	  writeFile << "Matched symbols: " << *p << endl;
       ss.pop();
       i++;
       p = &s[i];
@@ -233,6 +234,7 @@ void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
     else
     {
       cout << "Rule: " << table[ss.top()][lexer(*p)] << endl;
+	  writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
       pushToStack(table[ss.top()][lexer(*p)], ss, writeFile);
       // TODO: If there is no valid rule then we have an error while the pushToStack()
       // function will display an error message the function will continue parsing.

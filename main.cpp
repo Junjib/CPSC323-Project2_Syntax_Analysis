@@ -23,12 +23,13 @@ int main()
 // =========================================================================
 // Syntax Analysis
 	vector<string> lines;
+	int skippedLines = 1; // to count the lines we are skipping. Like comments and blank lines.
 	map< Symbols, map<Symbols, int> > table;
 	stack<Symbols> ss;
 	queue<Record> lex;
 	ofstream writeFile;
 
-	linesToAnalyze(lines);
+	linesToAnalyze(lines, skippedLines);
 	setupTable(table);
 	lexemeQueue(finalRecords, lex);
 	writeFile.open("output.txt");
@@ -37,13 +38,19 @@ int main()
 		removeSpaces(&lines[i]);
 		cout << "Analyzing this line: " << lines[i] << endl;
 		writeFile << "Analyzing this line: " << lines[i] << endl;
-		syntaxAnalysis(lex, lines[i], ss, table, writeFile);
+		if(!syntaxAnalysis(lex, lines[i], ss, table, writeFile))
+		{
+			cout << "There was a Syntax Error in line " << i+skippedLines << endl;
+			writeFile << "There was a Syntax Error in line " << i+skippedLines << endl;
+			break;
+		}
 		cout << endl << endl;
 		writeFile << endl;
 	}
 	writeFile.close();
 // =========================================================================
 // for loop for testing purposes
+/******** COMMENT ALL TESTING CODE **********
 	for(int i = 0; i < finalRecords.size(); i++)
 	{
 		cout << finalRecords[i].token << "   " << finalRecords[i].lexem << endl;
@@ -74,6 +81,6 @@ int main()
   cout << "table[NTS_TP][TS_SEMI]: " << table[NTS_TP][TS_SEMI] << endl;
   cout << "table[NTS_F][TS_I]: " << table[NTS_F][TS_I] << endl;
   cout << "table[NTS_F][TS_OPAREN]: " << table[NTS_F][TS_OPAREN] << endl;
-
+************ END TEST CODE COMMENT *************/
 	return 0;
 }

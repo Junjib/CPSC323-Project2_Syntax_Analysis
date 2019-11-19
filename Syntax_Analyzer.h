@@ -17,13 +17,13 @@ using namespace std;
 void linesToAnalyze(vector<string>& lines);
 void setupTable(map< Symbols, map<Symbols, int> > &table);
 bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile);
-void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss);
+bool syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss);
 void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile);
 void testTraverse(vector<string>& lines);
 void removeSpaces(string *str);
 
 // Grabs the relevant strings to analyze
-void linesToAnalyze(vector<string>& lines)
+void linesToAnalyze(vector<string>& lines, int& skippedLines)
 {
   ifstream readFile;
   string temp;
@@ -37,10 +37,12 @@ void linesToAnalyze(vector<string>& lines)
     if(temp[0] == '!' || temp == "")
     {
       discard = temp;
+      skippedLines++;
     }
     else if(operatorslist.find(temp[0]) != string::npos)
     {
       discard = temp;
+      skippedLines++;
     }
     else
     {
@@ -188,6 +190,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     default:
       cout << "SYNTAX ERROR!\n";
+      writeFile << "SYNTAX ERROR!\n";
       return false;
       break;
   }
@@ -205,7 +208,7 @@ void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex)
 }
 
 // This function will commence syntax analysis of a line in the input
-void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile)
+bool syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile)
 {
   char *p = &s[0];
   int i = 0;
@@ -236,10 +239,11 @@ void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
       cout << "Rule: " << table[ss.top()][lexer(*p)] << endl;
 	  writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
       if(!pushToStack(table[ss.top()][lexer(*p)], ss, writeFile)){
-        break;
+        return false;
       }
     }
   }
+  return true;
 }
 
 // This function is here to test the logic for string traversal if the

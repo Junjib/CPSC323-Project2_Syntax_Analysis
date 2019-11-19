@@ -230,11 +230,6 @@ void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
       ss.pop();
       i++;
       p = &s[i];
-      // TODO: Need to be able to traverse the string pointer by one character
-      // while avoiding whitespace. Currently pointer will traverse fine if there is
-      // no whitespace in the string.
-      // Optional: Include logic for identifiers that are more than one character
-      // long. An example of this logic can be found in the testTraverse() function.
     }
     else
     {
@@ -243,15 +238,6 @@ void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
       if(!pushToStack(table[ss.top()][lexer(*p)], ss, writeFile)){
         break;
       }
-      // TODO: If there is no valid rule then we have an error while the pushToStack()
-      // function will display an error message the function will continue parsing.
-      // Find a way to implement logic that will break out of the loop and exit the
-      // function.
-      // Optional: include an error handler function that will point out the error
-      // and either write it to the text file or print it on the screen.
-      // Optional(Probably not worth doing right now): include logic to where upon
-      // an error, the error will written to the file and screen, but the function
-      // will keep on parsing incase there are other syntax errors.
     }
   }
 }

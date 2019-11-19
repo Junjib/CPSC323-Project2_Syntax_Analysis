@@ -15,7 +15,7 @@ using namespace std;
 
 void linesToAnalyze(vector<string>& lines);
 void setupTable(map< Symbols, map<Symbols, int> > &table);
-void pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile);
+bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile);
 void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss);
 void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile);
 void testTraverse(vector<string>& lines);
@@ -73,7 +73,8 @@ void setupTable(map< Symbols, map<Symbols, int> > &table)
 }
 
 // Based on the rule will push rule to stack in reverse order
-void pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
+// returns true if successful, Returns false if error occurs
+bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 {
   switch(rule)
   {
@@ -185,8 +186,10 @@ void pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     default:
       cout << "SYNTAX ERROR!\n";
+      return false;
       break;
   }
+  return true;
 }
 
 // This function will load the elements in the vector finalRecords into a queue
@@ -235,7 +238,9 @@ void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
     {
       cout << "Rule: " << table[ss.top()][lexer(*p)] << endl;
 	  writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
-      pushToStack(table[ss.top()][lexer(*p)], ss, writeFile);
+      if(!pushToStack(table[ss.top()][lexer(*p)], ss, writeFile)){
+        break;
+      }
       // TODO: If there is no valid rule then we have an error while the pushToStack()
       // function will display an error message the function will continue parsing.
       // Find a way to implement logic that will break out of the loop and exit the

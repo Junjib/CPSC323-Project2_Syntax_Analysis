@@ -34,6 +34,7 @@ int main()
 	writeFile.open("output.txt");
 	for(int i = 0; i < lines.size(); i++)
 	{
+		removeSpaces(&lines[i]);
 		cout << "Analyzing this line: " << lines[i] << endl;
 		writeFile << "Analyzing this line: " << lines[i] << endl;
 		syntaxAnalysis(lex, lines[i], ss, table, writeFile);

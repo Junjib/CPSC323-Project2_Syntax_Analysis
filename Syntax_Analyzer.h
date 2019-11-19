@@ -10,6 +10,7 @@
 #include "symbols.h"
 #include <iomanip>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile);
 void syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss);
 void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile);
 void testTraverse(vector<string>& lines);
+void removeSpaces(string *str);
 
 // Grabs the relevant strings to analyze
 void linesToAnalyze(vector<string>& lines)
@@ -286,3 +288,9 @@ void testTraverse(vector<string>& lines)
     }
   }
 }
+
+// Function to remove all spaces from a given string 
+void removeSpaces(string *str) 
+{ 
+  str->erase(remove(str->begin(), str->end(), ' '), str->end());
+} 

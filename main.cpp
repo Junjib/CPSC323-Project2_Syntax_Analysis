@@ -52,6 +52,7 @@ int main()
 	}
 	if(!isThereError){
 		writeFile << "Finish.";
+		cout<<"Success. No syntax Errors. Please Check Output File."<<endl;
 	}
 	writeFile.close();
 // =========================================================================

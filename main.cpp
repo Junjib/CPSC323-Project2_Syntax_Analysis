@@ -33,19 +33,25 @@ int main()
 	setupTable(table);
 	lexemeQueue(finalRecords, lex);
 	writeFile.open("output.txt");
+	bool isThereError = false;
+	writeRecord(lex, writeFile);
 	for(int i = 0; i < lines.size(); i++)
 	{
 		removeSpaces(&lines[i]);
 		cout << "Analyzing this line: " << lines[i] << endl;
-		writeFile << "Analyzing this line: " << lines[i] << endl;
+		//writeFile << "Analyzing this line: " << lines[i] << endl;
 		if(!syntaxAnalysis(lex, lines[i], ss, table, writeFile))
 		{
 			cout << "There was a Syntax Error in line " << i+skippedLines << endl;
 			writeFile << "There was a Syntax Error in line " << i+skippedLines << endl;
 			break;
+			isThereError = true;
 		}
 		cout << endl << endl;
 		writeFile << endl;
+	}
+	if(!isThereError){
+		writeFile << "Finish.";
 	}
 	writeFile.close();
 // =========================================================================

@@ -21,6 +21,7 @@ bool syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss);
 void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile);
 void testTraverse(vector<string>& lines);
 void removeSpaces(string *str);
+void writeRecord(queue<Record> &lex, ofstream &writeFile);
 
 // Grabs the relevant strings to analyze
 void linesToAnalyze(vector<string>& lines, int& skippedLines)
@@ -84,14 +85,14 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
   {
     case 1: // S --> A
       cout << "Executing case: S --> A" << endl;
-      writeFile << "Executing case: S --> A\n";
+      writeFile << "\tS --> A\n";
       ss.pop();
       ss.push(NTS_A); // A
       break;
 
     case 2: // A --> i=E;
-      cout << "Executing case: A --> i=E" << endl;
-      writeFile << "Executing case: A --> i=E\n";
+      cout << "\tExecuting case: A --> i=E" << endl;
+      writeFile << "\tA --> i=E\n";
       ss.pop();
       ss.push(TS_SEMI); // ;
       ss.push(NTS_E); // E
@@ -101,7 +102,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 3: // E --> TE'
       cout << "Executing case: E --> TE'" << endl;
-      writeFile << "Executing case: E --> TE'\n";
+      writeFile << "\tE --> TE'\n";
       ss.pop();
       ss.push(NTS_EP); // E'
       ss.push(NTS_T); // T
@@ -109,7 +110,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 4: // E' --> +TE'
       cout << "Executing case: E' --> +TE'" << endl;
-      writeFile << "Executing case: E' --> +TE'\n";
+      writeFile << "\tE' --> +TE'\n";
       ss.pop();
       ss.push(NTS_EP); // E'
       ss.push(NTS_T); // T
@@ -118,7 +119,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 5: // E' --> -TE'
       cout << "Executing case: E' --> -TE'" << endl;
-      writeFile << "Executing case: E' --> -TE'\n" << endl;
+      writeFile << "\tE' --> -TE'\n" << endl;
       ss.pop();
       ss.push(NTS_EP); // E'
       ss.push(NTS_T); // T
@@ -127,13 +128,13 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 6: // E' --> epsilon
       cout << "Executing case: E' --> epsilon" << endl;
-      writeFile << "Executing case: E' --> epsilon\n";
+      writeFile << "\tE' --> epsilon\n";
       ss.pop();
       break;
 
     case 7: // T --> FT'
       cout << "Executing case: T --> FT'" << endl;
-      writeFile << "Executing case: T --> FT'\n";
+      writeFile << "\tT --> FT'\n";
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -141,7 +142,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 8: // T' --> *FT'
       cout << "Executing case: T' --> *FT'" << endl;
-      writeFile << "Executing case: T' --> *FT'\n";
+      writeFile << "\tT' --> *FT'\n";
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -150,7 +151,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 9: // T' --> /FT'
       cout << "Executing case: T' --> /FT'" << endl;
-      writeFile << "Executing case: T' --> /FT'\n";
+      writeFile << "\tT' --> /FT'\n";
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -159,7 +160,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 10: // T' --> %FT'
       cout << "Executing case: T' --> %FT'" << endl;
-      writeFile << "Executing case: T' --> %FT'\n";
+      writeFile << "\tT' --> %FT'\n";
       ss.pop();
       ss.push(NTS_TP); // T'
       ss.push(NTS_F); // F
@@ -168,20 +169,20 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
 
     case 11: // T' --> epsilon
       cout << "Executing case: T' --> epsilon" << endl;
-      writeFile << "Executing case: T' --> epsilon\n";
+      writeFile << "\tT' --> epsilon\n";
       ss.pop();
       break;
 
     case 12: // F --> i
       cout << "Executing case: F --> i" << endl;
-      writeFile << "Executing case: F --> i\n";
+      writeFile << "\tF --> i\n";
       ss.pop();
       ss.push(TS_I); // i
       break;
 
     case 13: // F --> (E)
       cout << "Executing case: F --> (E)" << endl;
-      writeFile << "Executing case: F --> (E)\n";
+      writeFile << "\tF --> (E)\n";
       ss.pop();
       ss.push(TS_CPAREN); // )
       ss.push(NTS_E); // E
@@ -202,8 +203,8 @@ void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex)
 {
   for(int i = 0; i < finalRecords.size(); i++)
   {
-    cout << finalRecords[i].token << " " << finalRecords[i].lexem << endl;
     lex.push(finalRecords[i]);
+    cout << finalRecords[i].token << " " << finalRecords[i].lexem << endl;
   }
 }
 
@@ -216,28 +217,24 @@ bool syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symb
   ss.push(NTS_S);
   s.push_back('@');
 
-  // TODO: Don't know where this should be done in the function but we need to write
-  // the token and lexeme of the symbol we are analyzing to the output file. One of the
-  // parameters to this function is a queue of Record however there are ! and %
-  // (at least in this input file) that we need to ignore. Can't say I'm sure what
-  // the logic should be to get this done.
-  // TODO: Everything needs to be written to an output file. I already set up the
-  // the file to be written to all that needs to be done is to reformat it so that
-  // it looks similar to the professor's sample output file.
   while(ss.size() > 0)
   {
     if(lexer(*p) == ss.top())
     {
+      if (*p != '@'){
+        writeRecord(lex, writeFile);
+        cout << "call write";
+      }
       cout << "Matched symbols: " << *p << endl;
-	  writeFile << "Matched symbols: " << *p << endl;
+	  // writeFile << "Matched symbols: " << *p << endl;
       ss.pop();
       i++;
       p = &s[i];
     }
     else
-    {
+    { 
       cout << "Rule: " << table[ss.top()][lexer(*p)] << endl;
-	  writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
+	  // writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
       if(!pushToStack(table[ss.top()][lexer(*p)], ss, writeFile)){
         return false;
       }
@@ -283,4 +280,31 @@ void testTraverse(vector<string>& lines)
 void removeSpaces(string *str) 
 { 
   str->erase(remove(str->begin(), str->end(), ' '), str->end());
-} 
+}
+
+// Funtion to write current record we are working on
+void writeRecord(queue<Record> &lex, ofstream &writeFile){
+  if(lex.size()<=0){
+    return;
+  }
+  Record tempRec = lex.front();
+  if(tempRec.lexem == "="){
+    writeFile << "Token: " << tempRec.token << "\t\tLexeme: " << tempRec.lexem << endl;
+    lex.pop();
+  }
+  else if(tempRec.lexem == "%"){ 
+    lex.pop();
+    if(lex.front().lexem == tempRec.lexem){
+      writeFile << "Token: " << tempRec.token << "\t\tLexeme: "<< tempRec.lexem << tempRec.lexem << endl;
+    }
+    writeRecord(lex, writeFile);
+  }
+  else if(tempRec.lexem == "!"){
+    lex.pop();
+    writeRecord(lex, writeFile);
+  }
+  else{
+    writeFile << "Token: " << tempRec.token << "\t\tLexeme: " << tempRec.lexem << endl;
+    lex.pop();
+  }
+}

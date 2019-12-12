@@ -6,6 +6,13 @@ using namespace std;
 enum Symbols
 {
   // Terminal Symbols
+  TS_IF, // if
+  TS_THEN, // then
+  TS_ELSE, // else
+  TS_ENDIF, // endif
+  TS_WHILE, // while
+  TS_DO, // do
+  TS_WHILEEND, // whileend
   TS_I, // i
   TS_EQUAL, // =
   TS_PLUS, // +
@@ -15,18 +22,32 @@ enum Symbols
   TS_MOD, // %
   TS_OPAREN, // (
   TS_CPAREN, // )
+  TS_N, // n
+  TS_E, // e
+  TS_INT, // int
+  TS_FLOAT, // float
+  TS_BOOL, // bool
+  TS_TRUE, // (true)
+  TS_FALSE, // (false)
+  TS_COMMA, // ,
   TS_SEMI, // ;
   TS_EOS, // @
   TS_INVALID, // invalid token
 
   //Non-terminal Symbols
   NTS_S, // S
+  NTS_I, // I
+  NTS_W, // W
   NTS_A, // A
   NTS_E, // E
   NTS_EP, // E'
   NTS_T, // T
   NTS_TP, // T'
   NTS_F, // F
+  NTS_D, // D
+  NTS_TYPE, // Ty
+  NTS_MOREID, // Mi
+  NTS_C // C
 };
 
 Symbols lexer(char c)
@@ -47,6 +68,7 @@ Symbols lexer(char c)
       case '%': return TS_MOD;
       case '(': return TS_OPAREN;
       case ')': return TS_CPAREN;
+      case ',': return TS_COMMA;
       case ';': return TS_SEMI;
       case '@': return TS_EOS;
       default: return TS_INVALID;

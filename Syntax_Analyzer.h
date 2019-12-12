@@ -56,25 +56,59 @@ void linesToAnalyze(vector<string>& lines, int& skippedLines)
 // Constructs the table
 void setupTable(map< Symbols, map<Symbols, int> > &table)
 {
+  table[NTS_S][TS_IF] = 3;
+  table[NTS_S][TS_WHILE] = 4;
   table[NTS_S][TS_I] = 1;
-  table[NTS_A][TS_I] = 2;
-  table[NTS_E][TS_I] = 3;
-  table[NTS_E][TS_OPAREN] = 3;
-  table[NTS_EP][TS_PLUS] = 4;
-  table[NTS_EP][TS_MINUS] = 5;
-  table[NTS_EP][TS_CPAREN] = 6;
-  table[NTS_EP][TS_SEMI] = 6;
-  table[NTS_T][TS_I] = 7;
-  table[NTS_T][TS_OPAREN] = 7;
-  table[NTS_TP][TS_PLUS] = 11;
-  table[NTS_TP][TS_MINUS] = 11;
-  table[NTS_TP][TS_MULTI] = 8;
-  table[NTS_TP][TS_DIV] = 9;
-  table[NTS_TP][TS_MOD] = 10;
-  table[NTS_TP][TS_CPAREN] = 11;
-  table[NTS_TP][TS_SEMI] = 11;
-  table[NTS_F][TS_I] = 12;
-  table[NTS_F][TS_OPAREN] = 13;
+  table[NTS_S][TS_EMPTY] = 2;
+  table[NTS_S][TS_INT] = 2;
+  table[NTS_S][TS_FLOAT] = 2;
+  table[NTS_S][TS_BOOL] = 2;
+
+  table[NTS_I][TS_IF] = 5;
+	
+  table[NTS_W][TS_WHILE] = 6;
+	
+  table[NTS_A][TS_I] = 7;
+  
+  table[NTS_E][TS_I] = 8;
+  table[NTS_E][TS_OPAREN] = 8;
+  table[NTS_E][TS_NUM] = 8;
+  
+  table[NTS_EP][TS_PLUS] = 9;
+  table[NTS_EP][TS_MINUS] = 10;
+  table[NTS_EP][TS_CPAREN] = 11;
+  table[NTS_EP][TS_SEMI] = 11;
+  
+  table[NTS_T][TS_I] = 12;
+  table[NTS_T][TS_OPAREN] = 12;
+  table[NTS_T][TS_NUM] = 12;
+
+  table[NTS_TP][TS_PLUS] = 16;
+  table[NTS_TP][TS_MINUS] = 16;
+  table[NTS_TP][TS_MULTI] = 13;
+  table[NTS_TP][TS_DIV] = 14;
+  table[NTS_TP][TS_MOD] = 15;
+  table[NTS_TP][TS_CPAREN] = 16;
+  table[NTS_TP][TS_SEMI] = 16;
+  
+  table[NTS_F][TS_I] = 18;
+  table[NTS_F][TS_OPAREN] = 17;
+  table[NTS_F][TS_NUM] = 19;
+  
+  table[NTS_D][TS_EMPTY] = 21;
+  table[NTS_D][TS_INT] = 20;
+  table[NTS_D][TS_FLOAT] = 20;
+  table[NTS_D][TS_BOOL] = 20;
+	
+  table[NTS_TYPE][TS_INT] = 22;
+  table[NTS_TYPE][TS_FLOAT] = 23;
+  table[NTS_TYPE][TS_BOOL] = 24;
+
+  table[NTS_MOREID][TS_EMPTY] = 26;
+  table[NTS_MOREID][TS_COMMA] = 25;
+
+  table[NTS_C][TS_TRUE] = 27;
+  table[NTS_C][TS_FALSE] = 28;  
 }
 
 // Based on the rule will push rule to stack in reverse order
@@ -89,8 +123,38 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.pop();
       ss.push(NTS_A); // A
       break;
+	  
+    case 2: // S --> D
+      cout << "Executing case: S --> D" << endl;
+      writeFile << "\tS --> D\n";
+      // code goes here
+      break;
 
-    case 2: // A --> i=E;
+    case 3: // S --> I
+      cout << "Executing case: S --> I" << endl;
+      writeFile << "\tS --> I\n";
+      // code goes here
+      break;	  
+
+    case 4: // S --> W
+      cout << "Executing case: S --> W" << endl;
+      writeFile << "\tS --> W\n";
+      // code goes here
+      break;
+	  
+    case 5: // I --> if C then S else S endif
+      cout << "Executing case: I --> if C then S else S endif" << endl;
+      writeFile << "\tI --> if C then S else S endif\n";
+      // code goes here
+      break;	  
+
+    case 6: // W --> while C do S whileend
+      cout << "Executing case: W --> while C do S whileend" << endl;
+      writeFile << "\tW --> while C do S whileend\n";
+      // code goes here
+      break;	  
+	  
+    case 7: // A --> i=E;
       cout << "\tExecuting case: A --> i=E" << endl;
       writeFile << "\tA --> i=E\n";
       ss.pop();
@@ -100,7 +164,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(TS_I); // i
       break;
 
-    case 3: // E --> TE'
+    case 8: // E --> TE'
       cout << "Executing case: E --> TE'" << endl;
       writeFile << "\tE --> TE'\n";
       ss.pop();
@@ -108,7 +172,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(NTS_T); // T
       break;
 
-    case 4: // E' --> +TE'
+    case 9: // E' --> +TE'
       cout << "Executing case: E' --> +TE'" << endl;
       writeFile << "\tE' --> +TE'\n";
       ss.pop();
@@ -117,7 +181,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(TS_PLUS); // +
       break;
 
-    case 5: // E' --> -TE'
+    case 10: // E' --> -TE'
       cout << "Executing case: E' --> -TE'" << endl;
       writeFile << "\tE' --> -TE'\n" << endl;
       ss.pop();
@@ -126,13 +190,13 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(TS_MINUS); // -
       break;
 
-    case 6: // E' --> epsilon
+    case 11: // E' --> epsilon
       cout << "Executing case: E' --> epsilon" << endl;
       writeFile << "\tE' --> epsilon\n";
       ss.pop();
       break;
 
-    case 7: // T --> FT'
+    case 12: // T --> FT'
       cout << "Executing case: T --> FT'" << endl;
       writeFile << "\tT --> FT'\n";
       ss.pop();
@@ -140,7 +204,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(NTS_F); // F
       break;
 
-    case 8: // T' --> *FT'
+    case 13: // T' --> *FT'
       cout << "Executing case: T' --> *FT'" << endl;
       writeFile << "\tT' --> *FT'\n";
       ss.pop();
@@ -149,7 +213,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(TS_MULTI); // *
       break;
 
-    case 9: // T' --> /FT'
+    case 14: // T' --> /FT'
       cout << "Executing case: T' --> /FT'" << endl;
       writeFile << "\tT' --> /FT'\n";
       ss.pop();
@@ -158,7 +222,7 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(TS_DIV); // /
       break;
 
-    case 10: // T' --> %FT'
+    case 15: // T' --> %FT'
       cout << "Executing case: T' --> %FT'" << endl;
       writeFile << "\tT' --> %FT'\n";
       ss.pop();
@@ -167,20 +231,13 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(TS_MOD); // %
       break;
 
-    case 11: // T' --> epsilon
+    case 16: // T' --> epsilon
       cout << "Executing case: T' --> epsilon" << endl;
       writeFile << "\tT' --> epsilon\n";
       ss.pop();
       break;
 
-    case 12: // F --> i
-      cout << "Executing case: F --> i" << endl;
-      writeFile << "\tF --> i\n";
-      ss.pop();
-      ss.push(TS_I); // i
-      break;
-
-    case 13: // F --> (E)
+    case 17: // F --> (E)
       cout << "Executing case: F --> (E)" << endl;
       writeFile << "\tF --> (E)\n";
       ss.pop();
@@ -188,7 +245,74 @@ bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile)
       ss.push(NTS_E); // E
       ss.push(TS_OPAREN); // (
       break;
+	  
+    case 18: // F --> i
+      cout << "Executing case: F --> i" << endl;
+      writeFile << "\tF --> i\n";
+      ss.pop();
+      ss.push(TS_I); // i
+      break;
 
+    case 19: // F --> n
+      cout << "Executing case: F --> n" << endl;
+      writeFile << "\tF --> n\n";
+      // code goes here
+      break;	  
+
+    case 20: // D --> Ty i Mi;
+      cout << "Executing case: D --> Ty i Mi;" << endl;
+      writeFile << "\tD --> Ty i Mi;\n";
+      // code goes here
+      break;
+
+    case 21: // D --> e;
+      cout << "Executing case: D --> e;" << endl;
+      writeFile << "\tD --> e;\n";
+      // code goes here
+      break;	  
+
+    case 22: // Ty --> int
+      cout << "Executing case: Ty --> int" << endl;
+      writeFile << "\tTy --> int\n";
+      // code goes here
+      break;
+
+    case 23: // Ty --> float
+      cout << "Executing case: Ty --> float" << endl;
+      writeFile << "\tTy --> float\n";
+      // code goes here
+      break;	  
+
+    case 24: // Ty --> bool
+      cout << "Executing case: Ty --> bool" << endl;
+      writeFile << "\tTy --> bool\n";
+      // code goes here
+      break;
+
+    case 25: // Mi --> , i Mi
+      cout << "Executing case: Mi --> , i Mi" << endl;
+      writeFile << "\tMi --> , i Mi\n";
+      // code goes here
+      break;	  
+
+    case 26: // Mi --> e
+      cout << "Executing case: Mi --> e" << endl;
+      writeFile << "\tMi --> e\n";
+      // code goes here
+      break;
+
+    case 27: // C --> true
+      cout << "Executing case: C --> true" << endl;
+      writeFile << "\tC --> true\n";
+      // code goes here
+      break;	  
+
+    case 28: // C --> false
+      cout << "Executing case: C --> false" << endl;
+      writeFile << "\C --> false\n";
+      // code goes here
+      break;
+	  
     default:
       cout << "SYNTAX ERROR!\n";
       writeFile << "SYNTAX ERROR!\n";

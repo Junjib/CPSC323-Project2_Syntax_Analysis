@@ -22,8 +22,8 @@ enum Symbols
   TS_MOD, // %
   TS_OPAREN, // (
   TS_CPAREN, // )
-  TS_N, // n
-  TS_E, // e
+  TS_NUM, // n
+  TS_EMPTY, // e
   TS_INT, // int
   TS_FLOAT, // float
   TS_BOOL, // bool
@@ -68,6 +68,8 @@ Symbols lexer(char c)
       case '%': return TS_MOD;
       case '(': return TS_OPAREN;
       case ')': return TS_CPAREN;
+      case 'n': return TS_NUM;
+      case 'e': return TS_EMPTY;
       case ',': return TS_COMMA;
       case ';': return TS_SEMI;
       case '@': return TS_EOS;

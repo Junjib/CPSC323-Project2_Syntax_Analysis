@@ -1,6 +1,7 @@
 #ifndef SYMBOLS_H
 #define SYMBOLS_H
 
+#include <string>
 using namespace std;
 
 enum Symbols
@@ -50,11 +51,31 @@ enum Symbols
   NTS_C // C
 };
 
-Symbols lexer(char c)
+Symbols lexer(char c, string temp)
 {
-  if(isalpha(c))
+  if(isalpha(c) || c == '$')
   {
     return TS_I;
+  }
+  else if(temp.size() != 0 && !isdigit(temp[0]) && isdigit(c))
+  {
+    return TS_I;
+  }
+  else if(temp.size() != 0 && isdigit(temp[0]) && isdigit(c))
+  {
+    return TS_NUM;
+  }
+  else if(temp == "int")
+  {
+    return TS_INT;
+  }
+  else if(temp == "float")
+  {
+    return TS_FLOAT;
+  }
+  else if(temp == "bool")
+  {
+    return TS_BOOL;
   }
   else
   {
@@ -68,7 +89,6 @@ Symbols lexer(char c)
       case '%': return TS_MOD;
       case '(': return TS_OPAREN;
       case ')': return TS_CPAREN;
-      case 'n': return TS_NUM;
       case 'e': return TS_EMPTY;
       case ',': return TS_COMMA;
       case ';': return TS_SEMI;

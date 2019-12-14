@@ -53,7 +53,35 @@ enum Symbols
 
 Symbols lexer(char c, string temp)
 {
-  if(isalpha(c) || c == '$')
+  if(temp == "if")
+  {
+    return TS_IF;
+  }
+  else if(temp == "then")
+  {
+    return TS_THEN;
+  }
+  else if(temp == "else")
+  {
+    return TS_THEN;
+  }
+  else if(temp == "endif")
+  {
+    return TS_THEN;
+  }
+  else if(temp == "while")
+  {
+    return TS_THEN;
+  }
+  else if(temp == "do")
+  {
+    return TS_THEN;
+  }
+  else if(temp == "whileend")
+  {
+    return TS_THEN;
+  }
+  else if(isalpha(c) || c == '$')
   {
     return TS_I;
   }
@@ -77,6 +105,18 @@ Symbols lexer(char c, string temp)
   {
     return TS_BOOL;
   }
+  else if(temp == "true" || temp == "TRUE" || temp == "True")
+  {
+    return TS_TRUE;
+  }
+  else if(temp == "false" || temp == "FALSE" || temp == "False")
+  {
+    return TS_FALSE;
+  }
+  else if(temp == " ") // temporary definition
+  {
+    return TS_EMPTY;
+  }
   else
   {
     switch(c)
@@ -89,7 +129,6 @@ Symbols lexer(char c, string temp)
       case '%': return TS_MOD;
       case '(': return TS_OPAREN;
       case ')': return TS_CPAREN;
-      case 'e': return TS_EMPTY;
       case ',': return TS_COMMA;
       case ';': return TS_SEMI;
       case '@': return TS_EOS;

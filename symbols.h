@@ -63,23 +63,23 @@ Symbols lexer(char c, string temp)
   }
   else if(temp == "else")
   {
-    return TS_THEN;
+    return TS_ELSE;
   }
   else if(temp == "endif")
   {
-    return TS_THEN;
+    return TS_ENDIF;
   }
   else if(temp == "while")
   {
-    return TS_THEN;
+    return TS_WHILE;
   }
   else if(temp == "do")
   {
-    return TS_THEN;
+    return TS_DO;
   }
   else if(temp == "whileend")
   {
-    return TS_THEN;
+    return TS_WHILEEND;
   }
   else if(isalpha(c) || c == '$')
   {
@@ -113,10 +113,6 @@ Symbols lexer(char c, string temp)
   {
     return TS_FALSE;
   }
-  else if(temp == " ") // temporary definition
-  {
-    return TS_EMPTY;
-  }
   else
   {
     switch(c)
@@ -132,7 +128,8 @@ Symbols lexer(char c, string temp)
       case ',': return TS_COMMA;
       case ';': return TS_SEMI;
       case '@': return TS_EOS;
-      default: return TS_INVALID;
+      default: return TS_EMPTY;
+      //default: return TS_INVALID;
     }
   }
 }

@@ -1,73 +1,54 @@
 Token: OPERATOR		Lexeme: %%
 Token: IDENTIFIER		Lexeme: x
-	S --> A
-	A --> i=E
+	S --> D
+	D --> Ty i Mi;
+	Ty --> int
 Token: OPERATOR		Lexeme: =
 Token: IDENTIFIER		Lexeme: a
-	E --> TE'
-	T --> FT'
-	F --> i
+	Mi --> , i Mi
 Token: OPERATOR		Lexeme: +
-	T' --> epsilon
-	E' --> +TE'
 Token: IDENTIFIER		Lexeme: b
-	T --> FT'
-	F --> i
+	Mi --> , i Mi
 Token: SEPERATOR		Lexeme: ;
-	T' --> epsilon
-	E' --> epsilon
 Token: IDENTIFIER		Lexeme: z
+	Mi --> e
+Token: OPERATOR		Lexeme: =
 
 	S --> A
-	A --> i=E
-Token: OPERATOR		Lexeme: =
+	A --> i=E;
 Token: IDENTIFIER		Lexeme: c
+Token: OPERATOR		Lexeme: +
 	E --> TE'
 	T --> FT'
-	F --> i
-Token: OPERATOR		Lexeme: +
-	T' --> epsilon
-	E' --> +TE'
+	F --> n
 Token: IDENTIFIER		Lexeme: d
-	T --> FT'
-	F --> i
-Token: SEPERATOR		Lexeme: ;
 	T' --> epsilon
 	E' --> epsilon
-Token: IDENTIFIER		Lexeme: a
+Token: SEPERATOR		Lexeme: ;
 
 	S --> A
-	A --> i=E
+	A --> i=E;
+Token: IDENTIFIER		Lexeme: a
 Token: OPERATOR		Lexeme: =
-Token: IDENTIFIER		Lexeme: e
 	E --> TE'
 	T --> FT'
-	F --> i
-Token: OPERATOR		Lexeme: -
-	T' --> epsilon
-	E' --> -TE'
-
-Token: IDENTIFIER		Lexeme: f
-	T --> FT'
-	F --> i
-Token: SEPERATOR		Lexeme: ;
+	F --> n
+Token: IDENTIFIER		Lexeme: e
 	T' --> epsilon
 	E' --> epsilon
+Token: OPERATOR		Lexeme: -
+
+	S --> D
+	D --> Ty i Mi;
+	Ty --> bool
+Token: IDENTIFIER		Lexeme: f
+Token: SEPERATOR		Lexeme: ;
+	Mi --> e
 Token: IDENTIFIER		Lexeme: b
 
 	S --> A
-	A --> i=E
+	A --> i=E;
 Token: OPERATOR		Lexeme: =
 Token: IDENTIFIER		Lexeme: g
-	E --> TE'
-	T --> FT'
-	F --> i
-Token: OPERATOR		Lexeme: *
-	T' --> *FT'
-Token: IDENTIFIER		Lexeme: n
-	F --> i
-Token: SEPERATOR		Lexeme: ;
-	T' --> epsilon
-	E' --> epsilon
-
-Finish.
+SYNTAX ERROR!
+There was a Syntax Error in line 6

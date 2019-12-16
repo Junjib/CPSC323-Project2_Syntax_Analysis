@@ -44,8 +44,8 @@ int main()
 		{
 			cout << "There was a Syntax Error in line " << i+skippedLines << endl;
 			writeFile << "There was a Syntax Error in line " << i+skippedLines << endl;
-			break;
 			isThereError = true;
+			break;
 		}
 		cout << endl << endl;
 		writeFile << endl;

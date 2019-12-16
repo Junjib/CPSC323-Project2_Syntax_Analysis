@@ -2,15 +2,11 @@
 int num, nu2m, large$;
 num = 0;
 nu2m = 15;
-boolean hey;
+bool hey;
 hey = true;
 hey = false;
-if(num > nu2m)
-{
+if(true)
 	large$ = num;
-}
 else
-{
 	large$ = nu2m;
-}
 endif

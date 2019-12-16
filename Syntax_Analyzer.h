@@ -14,6 +14,8 @@
 
 using namespace std;
 
+set<string> keywords;
+
 void linesToAnalyze(vector<string>& lines);
 void setupTable(map< Symbols, map<Symbols, int> > &table);
 bool pushToStack(int rule, stack<Symbols> &ss, ofstream &writeFile);
@@ -22,7 +24,7 @@ void lexemeQueue(vector<Record> &finalRecords, queue<Record> &lex, map< Symbols,
 void testTraverse(vector<string>& lines);
 void removeSpaces(string *str);
 void writeRecord(queue<Record> &lex, ofstream &writeFile);
-void traverse(string &line, int &i, string &temp);
+bool traverse(string &line, int &i, string &temp);
 
 // Grabs the relevant strings to analyze
 void linesToAnalyze(vector<string>& lines, int& skippedLines)
@@ -57,6 +59,8 @@ readFile.close();
 // Constructs the table
 void setupTable(map< Symbols, map<Symbols, int> > &table)
 {
+  readKeywords(keywords); // brings 
+
 table[NTS_S][TS_IF] = 3;
 table[NTS_S][TS_WHILE] = 4;
 table[NTS_S][TS_I] = 1;
@@ -280,6 +284,7 @@ switch(rule)
     cout << "Executing case: D --> Ty i Mi;" << endl;
     writeFile << "\tD --> Ty i Mi;\n";
     ss.pop();
+    ss.push(TS_SEMI);
     ss.push(NTS_MOREID);
     ss.push(TS_I);
     ss.push(NTS_TYPE);
@@ -326,7 +331,7 @@ switch(rule)
     cout << "Executing case: Mi --> e" << endl;
     writeFile << "\tMi --> e\n";
     ss.pop();
-    ss.push(TS_EMPTY);
+    //ss.push(TS_EMPTY);
     break;
 
   case 27: // C --> true
@@ -365,7 +370,7 @@ for(int i = 0; i < finalRecords.size(); i++)
 // This function will commence syntax analysis of a line in the input
 bool syntaxAnalysis(queue<Record> &lex, string &s, stack<Symbols> &ss, map< Symbols, map<Symbols, int> > &table, ofstream &writeFile)
 {
-char *p = &s[0];
+char* p = &s[0];
 int i = 0;
 bool check = false;
 string temp = "";
@@ -381,9 +386,8 @@ while(ss.size() > 0)
     check = true;
     p = &s[i];
     //cout << *p << endl;
-
   }
-  if(lexer(*p,temp) == ss.top())
+  if(lexer(*p,temp, ss.top()) == ss.top())
   {
     if (*p != '@'){
       writeRecord(lex, writeFile);
@@ -406,9 +410,11 @@ while(ss.size() > 0)
   }
   else
   {
-    cout << "Rule: " << table[ss.top()][lexer(*p,temp)] << endl;
+    cout << "DEBUG VARIABLES: temp: " << temp << " p: " << *p << endl;
+    cout << "Rule: " << table[ss.top()][lexer(*p,temp, ss.top())] << endl;
   // writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
-    if(!pushToStack(table[ss.top()][lexer(*p, temp)], ss, writeFile)){
+    if(!pushToStack(table[ss.top()][lexer(*p, temp, ss.top())], ss, writeFile)){
+      cout << ss.top()<< endl;
       return false;
     }
   }
@@ -484,7 +490,8 @@ else{
 
 // This function will deal with words (identifiers/keywords) and numbers that
 // have a length greater than 1
-void traverse(string &line, int &i, string &temp)
+// returns true if keyword is found
+bool traverse(string &line, int &i, string &temp)
 {
   bool check = false;
   bool dot = false;
@@ -492,6 +499,13 @@ void traverse(string &line, int &i, string &temp)
 
   for(int j = i; j < line.size(); j++)
   {
+    if(isKeyword(temp, keywords))
+    {
+      cout << "Found Keyword: " << temp<<endl;
+      i=j;
+      cout << "j: " <<j << endl;
+      return true;
+    }
     if(!check && isalpha(line[j]))
     {
       check = true;
@@ -515,6 +529,7 @@ void traverse(string &line, int &i, string &temp)
       else if(dot && line[j] == '.')
       {
         cout << "SYNTAX ERROR: Only one dot (.) is allowed in a number\n";
+        cout << "j: " <<j << endl;
         break;
       }
       else
@@ -527,6 +542,7 @@ void traverse(string &line, int &i, string &temp)
     {
       check = false;
       //cout << temp << endl;
+      cout << "j: " <<j << endl;
       break;
     }
     else if(check && (isalpha(line[j]) || isdigit(line[j]) || line[j] == '$'))
@@ -538,7 +554,9 @@ void traverse(string &line, int &i, string &temp)
     {
       check = false;
       //cout << temp << endl;
+      cout << "j: " <<j << endl;
       break;
     }
   }
+  return false;
 }

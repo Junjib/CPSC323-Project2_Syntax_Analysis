@@ -51,7 +51,7 @@ enum Symbols
   NTS_C // C
 };
 
-Symbols lexer(char c, string temp)
+Symbols lexer(char c, string temp, Symbols topSymbol)
 {
   if(temp == "if")
   {
@@ -81,18 +81,6 @@ Symbols lexer(char c, string temp)
   {
     return TS_WHILEEND;
   }
-  else if(isalpha(c) || c == '$')
-  {
-    return TS_I;
-  }
-  else if(temp.size() != 0 && !isdigit(temp[0]) && isdigit(c))
-  {
-    return TS_I;
-  }
-  else if(temp.size() != 0 && isdigit(temp[0]) && isdigit(c))
-  {
-    return TS_NUM;
-  }
   else if(temp == "int")
   {
     return TS_INT;
@@ -112,6 +100,22 @@ Symbols lexer(char c, string temp)
   else if(temp == "false" || temp == "FALSE" || temp == "False")
   {
     return TS_FALSE;
+  }
+  else if(isalpha(c) || c == '$')
+  {
+    return TS_I;
+  }
+  else if(temp.size() != 0 && !isdigit(temp[0]) && isdigit(c))
+  {
+    return TS_I;
+  }
+  else if(temp.size() != 0 && isdigit(temp[0]) && isdigit(c))
+  {
+    return TS_NUM;
+  }
+  else if (topSymbol == NTS_MOREID && c == ';')
+  {
+    return TS_EMPTY;
   }
   else
   {

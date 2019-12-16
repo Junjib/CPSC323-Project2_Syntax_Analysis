@@ -1,101 +1,123 @@
-Token: OPERATOR		Lexeme: %%
-Token: IDENTIFIER		Lexeme: x
+Token: KEYWORD			Lexeme: int
 	S --> D
 	D --> Ty i Mi;
 	Ty --> int
-Token: OPERATOR		Lexeme: =
-Token: IDENTIFIER		Lexeme: a
+Token: IDENTIFIER		Lexeme: num
+Token: SEPERATOR		Lexeme: ,
 	Mi --> , i Mi
-Token: OPERATOR		Lexeme: +
-Token: IDENTIFIER		Lexeme: b
+Token: IDENTIFIER		Lexeme: nu2m
+Token: SEPERATOR		Lexeme: ,
 	Mi --> , i Mi
+Token: IDENTIFIER		Lexeme: large$
 Token: SEPERATOR		Lexeme: ;
-Token: IDENTIFIER		Lexeme: z
 	Mi --> e
-Token: OPERATOR		Lexeme: =
+Token: IDENTIFIER		Lexeme: num
 
 	S --> A
 	A --> i=E;
-Token: IDENTIFIER		Lexeme: c
-Token: OPERATOR		Lexeme: +
+Token: OPERATOR		Lexeme: =
+Token: NUMBER		Lexeme: 0
 	E --> TE'
 	T --> FT'
 	F --> n
-Token: IDENTIFIER		Lexeme: d
-	T' --> epsilon
-	E' --> epsilon
 Token: SEPERATOR		Lexeme: ;
+	T' --> epsilon
+	E' --> epsilon
+Token: IDENTIFIER		Lexeme: nu2m
 
 	S --> A
 	A --> i=E;
-Token: IDENTIFIER		Lexeme: a
 Token: OPERATOR		Lexeme: =
+Token: NUMBER		Lexeme: 15
 	E --> TE'
 	T --> FT'
 	F --> n
-Token: IDENTIFIER		Lexeme: e
+Token: SEPERATOR		Lexeme: ;
 	T' --> epsilon
 	E' --> epsilon
-Token: OPERATOR		Lexeme: -
+Token: KEYWORD			Lexeme: bool
 
 	S --> D
 	D --> Ty i Mi;
 	Ty --> bool
-Token: IDENTIFIER		Lexeme: f
+Token: IDENTIFIER		Lexeme: hey
 Token: SEPERATOR		Lexeme: ;
 	Mi --> e
-Token: IDENTIFIER		Lexeme: b
+Token: IDENTIFIER		Lexeme: hey
 
 	S --> A
 	A --> i=E;
 Token: OPERATOR		Lexeme: =
-Token: IDENTIFIER		Lexeme: g
+Token: IDENTIFIER		Lexeme: true
 	C --> true
-Token: OPERATOR		Lexeme: *
-Token: IDENTIFIER		Lexeme: n
+Token: SEPERATOR		Lexeme: ;
+Token: IDENTIFIER		Lexeme: hey
+
+	S --> A
+	A --> i=E;
+Token: OPERATOR		Lexeme: =
+Token: IDENTIFIER		Lexeme: false
+	C --> false
+Token: SEPERATOR		Lexeme: ;
+Token: KEYWORD			Lexeme: if
+
+	S --> I
+	I --> if C then S else S endif
+Token: SEPERATOR		Lexeme: (
+	C --> true
+Token: IDENTIFIER		Lexeme: true
+
+	S --> A
+	A --> i=E;
+Token: SEPERATOR		Lexeme: )
+Token: IDENTIFIER		Lexeme: large$
+	E --> TE'
+	T --> FT'
+	F --> i
+Token: OPERATOR		Lexeme: =
+	T' --> epsilon
+	E' --> epsilon
+Token: IDENTIFIER		Lexeme: num
+
 
 	S --> A
 	A --> i=E;
 Token: SEPERATOR		Lexeme: ;
-	C --> false
-
-	S --> I
-	I --> if C then S else S endif
-	C --> true
-
-	S --> A
-	A --> i=E;
+Token: KEYWORD			Lexeme: else
 	E --> TE'
 	T --> FT'
 	F --> i
+Token: IDENTIFIER		Lexeme: large$
 	T' --> epsilon
 	E' --> epsilon
+Token: OPERATOR		Lexeme: =
 
-
-	S --> A
-	A --> i=E;
-	E --> TE'
-	T --> FT'
-	F --> i
-	T' --> epsilon
-	E' --> epsilon
-
+Token: IDENTIFIER		Lexeme: nu2m
 
 	S --> W
 	W --> while C do S whileend
+Token: SEPERATOR		Lexeme: ;
 	C --> true
+Token: KEYWORD			Lexeme: endif
 
 	S --> A
 	A --> i=E;
+Token: KEYWORD			Lexeme: while
+Token: SEPERATOR		Lexeme: (
 	E --> TE'
 	T --> FT'
 	F --> i
+Token: IDENTIFIER		Lexeme: true
 	T' --> epsilon
 	E' --> +TE'
+Token: SEPERATOR		Lexeme: )
 	T --> FT'
 	F --> n
+Token: IDENTIFIER		Lexeme: num
 	T' --> epsilon
 	E' --> epsilon
+Token: OPERATOR		Lexeme: =
 
+Token: IDENTIFIER		Lexeme: num
 
 Finish.

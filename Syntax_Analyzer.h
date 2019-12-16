@@ -436,6 +436,7 @@ while(ss.size() > 0)
       if (ss.top() == TS_WHILEEND)
         return true;
       if (ss.top() == TS_EOS){
+        writeRecord(lex, writeFile);
         ss.pop();
         return true;
       }

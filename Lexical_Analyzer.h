@@ -41,7 +41,7 @@ void readInput(vector<char>& input)
 ifstream read;
 char in;
 
-read.open("input.txt");
+read.open("input3.txt");
 
 while (read >> noskipws >> in)
 {

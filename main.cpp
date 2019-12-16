@@ -35,6 +35,7 @@ int main()
 	writeFile.open("output.txt");
 	bool isThereError = false;
 	writeRecord(lex, writeFile);
+	cout << "Lines in file: " << lines.size() << endl;
 	for(int i = 0; i < lines.size(); i++)
 	{
 		removeSpaces(&lines[i]);

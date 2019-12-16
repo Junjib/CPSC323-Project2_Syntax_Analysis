@@ -6,7 +6,7 @@ bool hey;
 hey = true;
 hey = false;
 if(true)
-	large$ = num;
+large$ = num;
 else
-	large$ = nu2m;
+large$ = nu2m;
 endif

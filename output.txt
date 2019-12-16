@@ -50,5 +50,28 @@ Token: IDENTIFIER		Lexeme: b
 	A --> i=E;
 Token: OPERATOR		Lexeme: =
 Token: IDENTIFIER		Lexeme: g
-SYNTAX ERROR!
-There was a Syntax Error in line 6
+	C --> true
+Token: OPERATOR		Lexeme: *
+Token: IDENTIFIER		Lexeme: n
+
+	S --> A
+	A --> i=E;
+Token: SEPERATOR		Lexeme: ;
+	C --> false
+
+	S --> I
+	I --> if C then S else S endif
+	C --> true
+
+	S --> A
+	A --> i=E;
+	E --> TE'
+	T --> FT'
+	F --> i
+	T' --> epsilon
+	E' --> epsilon
+
+
+
+
+Finish.

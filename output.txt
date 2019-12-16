@@ -72,6 +72,30 @@ Token: SEPERATOR		Lexeme: ;
 	E' --> epsilon
 
 
+	S --> A
+	A --> i=E;
+	E --> TE'
+	T --> FT'
+	F --> i
+	T' --> epsilon
+	E' --> epsilon
+
+
+	S --> W
+	W --> while C do S whileend
+	C --> true
+
+	S --> A
+	A --> i=E;
+	E --> TE'
+	T --> FT'
+	F --> i
+	T' --> epsilon
+	E' --> +TE'
+	T --> FT'
+	F --> n
+	T' --> epsilon
+	E' --> epsilon
 
 
 Finish.

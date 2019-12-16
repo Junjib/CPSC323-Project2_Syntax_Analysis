@@ -389,8 +389,6 @@ s.push_back('@');
 
 while(ss.size() > 0)
 {
-  if (ss.top() == TS_ELSE)
-        return true;
   if(!check && (isalpha(*p) || isdigit(*p)))
   {
     traverse(s, i, temp);
@@ -415,23 +413,39 @@ while(ss.size() > 0)
       cout << "Matched symbols: " << *p << endl;
     // writeFile << "Matched symbols: " << *p << endl;
     }
+    cout<< "Popping " << ss.top()<<endl;
     ss.pop();
     i++;
     p = &s[i];
   }
   else
   {
-    cout << "DEBUG VARIABLES: temp: " << temp << " p: " << *p << endl;
+    if (*p == '@')
+      cout <<" ************** p: " << *p << endl;
     cout << "Rule: " << table[ss.top()][lexer(*p,temp, ss.top())] << endl;
   // writeFile << "Rule: " << table[ss.top()][lexer(*p)] << endl;
     if(!pushToStack(table[ss.top()][lexer(*p, temp, ss.top())], ss, writeFile)){
-      cout << "top of the stack: " << ss.top()<< endl;
+      cout << "top of the stack: " << ss.top() << endl;
       if (ss.top() == NTS_S)
         return true;
       if (ss.top() == TS_ELSE)
         return true;
+      if (ss.top() == TS_ENDIF){
+        return true;
+      }
+      if (ss.top() == TS_WHILEEND)
+        return true;
+      if (ss.top() == TS_EOS){
+        ss.pop();
+        return true;
+      }
       return false;
     }
+  }
+  if(!ss.empty())
+  {
+    if(ss.top() == NTS_S)
+      return true;
   }
 }
 return true;
@@ -516,10 +530,21 @@ bool traverse(string &line, int &i, string &temp)
   {
     if(isKeyword(temp, keywords))
     {
-      cout << "Found Keyword: " << temp<<endl;
-      i=j;
-      cout << "j: " <<j << endl;
-      return true;
+      if(temp == "while"){
+        if(line[j] == '('){
+          cout << "Found Keyword: " << temp <<endl;
+          i=j;
+          cout << "j: " << j << endl;
+          return true;
+        }       
+      }
+      else
+      {
+        cout << "Found Keyword: " << temp <<endl;
+        i=j;
+        cout << "j: " << j << endl;
+        return true;
+      }
     }
     if(!check && isalpha(line[j]))
     {

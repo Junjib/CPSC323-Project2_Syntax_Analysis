@@ -10,3 +10,6 @@ large$ = num;
 else
 large$ = nu2m;
 endif
+while(true)
+num=num+1;
+whileend
